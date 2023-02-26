@@ -82,7 +82,7 @@ class Tree:
             print(node.data, end="-> ")
     
     
-    def levelOrderSearch(self, value: int):
+    def levelOrderSearch(self, value: int)-> Nodo:
         
         traversed = []
         traversed.append(self.raiz)
@@ -132,7 +132,7 @@ class Tree:
         
         return None
     
-       
+    
     def buscarCamino(self, nodoActual, nodoObjetivo, camino):
         
 
