@@ -1,10 +1,14 @@
 from Nodo import Nodo
 class Tree:
     
-    def __init__(self, data) -> None:
-        self.raiz = Nodo(data)
+    def __init__(self, data = None) -> None:
+        if data is not None:
+            self.raiz = Nodo(data)
     
     def addNode(self, data,name,canciones, currentNode=None):
+        if self.raiz== None:
+            self.raiz = currentNode
+            return
         if currentNode == None:
             currentNode = self.raiz
         datoDeNodo=currentNode.data
