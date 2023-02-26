@@ -4,11 +4,11 @@ class Tree:
     def __init__(self, data) -> None:
         self.raiz = Nodo(data)
     
-    def addNode(self, data, currentNode=None):
+    def addNode(self, data,name,canciones, currentNode=None):
         if currentNode == None:
             currentNode = self.raiz
         datoDeNodo=currentNode.data
-        nodo = Nodo(data, level=currentNode.level+1)
+        nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones)
         
         if data>datoDeNodo:
             if currentNode.RightSon == None:
@@ -21,7 +21,7 @@ class Tree:
             else:
                 self.addNode(data, currentNode.LeftSon)
     
-    def levelOrderInsert(self, val):
+    def levelOrderInsert(self, val, name, canciones):
         
         if self.raiz is None:
             self.raiz = Nodo(val)
@@ -32,12 +32,12 @@ class Tree:
         while queue:
             node = queue.pop(0)
             if node.LeftSon is None:
-                node.LeftSon = Nodo(val, level = node.level+1)
+                node.LeftSon = Nodo(val, level = node.level+1, name= name, canciones= canciones)
                 return 
             else:
                 queue.append(node.LeftSon)
             if node.RightSon is None:
-                node.RightSon = Nodo(val, level = node.level+1)
+                node.RightSon = Nodo(val, level = node.level+1, name= name, canciones= canciones)
                 return 
             else:
                 queue.append(node.RightSon)
@@ -89,10 +89,11 @@ class Tree:
                 return traversed[0]
             x = traversed.pop(0) 
             if x.LeftSon != None:
-                traversed.extend(x.LeftSon)
+                traversed.append(x.LeftSon)
             if x.RightSon != None:
-                traversed.extend(x.RightSon)
+                traversed.append(x.RightSon)
         return None
+    
     def buscaElMenor(self, nodo=None) -> int:
         
         if nodo == None:
@@ -127,22 +128,7 @@ class Tree:
         
         return None
     
-    
-
-    def punto1(self, nodo1, nodo2):
-        
-        camino1 = self.buscarCamino(self.raiz, nodo1, [])  
-        camino2 = self.buscarCamino(self.raiz, nodo2, []) 
-        
-        i = 0
-        while i < len(camino1) and i < len(camino2) and camino1[i] == camino2[i]:
-            i += 1
-            
-        
-        return camino1[i-1]  
-    
-    
-    
+       
     def buscarCamino(self, nodoActual, nodoObjetivo, camino):
         
 
