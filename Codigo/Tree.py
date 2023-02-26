@@ -1,13 +1,18 @@
 from Nodo import Nodo
+import networkx as nx
 class Tree:
     
     def __init__(self, data = None) -> None:
+        self.raiz = None
         if data is not None:
             self.raiz = Nodo(data)
     
     def addNode(self, data,name,canciones, currentNode=None):
+        
         if self.raiz== None:
-            self.raiz = currentNode
+            nodo = Nodo(data, name= name, canciones= canciones)
+            self.raiz = nodo
+            print("Entré")
             return
         if currentNode == None:
             currentNode = self.raiz
@@ -18,12 +23,12 @@ class Tree:
             if currentNode.RightSon == None:
                 currentNode.RightSon = nodo 
             else:
-                self.addNode(data, currentNode.RightSon)
+                self.addNode(data = data, currentNode= currentNode.RightSon, name= name, canciones=canciones)
         elif data<datoDeNodo:
             if currentNode.LeftSon == None:
                 currentNode.LeftSon = nodo 
             else:
-                self.addNode(data, currentNode.LeftSon)
+                self.addNode(data, currentNode = currentNode.LeftSon, name = name, canciones= canciones)
     
     def levelOrderInsert(self, val, name, canciones):
         
@@ -64,8 +69,16 @@ class Tree:
             self.inordernRecursivo(node.LeftSon)
             print(node.data, end="-> ")
             self.inordernRecursivo(node.RightSon)
-
-
+    def agregadorDeVertices(self,node:Nodo, G:nx.Graph):
+        if node is not None:
+            if node.LeftSon is not None and node.LeftSon is Nodo :
+                G.add_edge(node.nombre, node.LeftSon.nombre)
+            if node.RightSon is not None  and node.LeftSon is Nodo:
+                G.add_edge(node.nombre, node.LeftSon.nombre)            
+            self.agregadorDeVertices(node.LeftSon, G)
+            self.agregadorDeVertices(node.RightSon, G) 
+        return G
+        
     def preordenRecursivo(self, node)-> None:
         
         
@@ -97,6 +110,21 @@ class Tree:
             if x.RightSon != None:
                 traversed.append(x.RightSon)
         return None
+    def recorrer(self, nodos):
+        traversed = []
+        
+        traversed.append(self.raiz)
+        if self.raiz is None:
+            return None
+        while traversed != []:
+            
+            x = traversed.pop(0)
+            nodos.append(x)
+            if x.LeftSon != None:
+                traversed.append(x.LeftSon)
+            if x.RightSon != None:
+                traversed.append(x.RightSon)
+        return nodos
     
     def buscaElMenor(self, nodo=None) -> int:
         

@@ -1,6 +1,6 @@
 class unCrypt:
     def __init__(self) -> None:
-        self.ABC = "abcdefghijklmnopqrstuvwxyz" 
+        self.ABC = "abcdefghijklmnopqrstuvwxyz,-" 
         self.dictCryp = {}
         self.crearDict()
     def crearDict(self):
