@@ -7,26 +7,22 @@ class graficador:
         self.treeCreator.lector("./CSV/User_track_data.csv")
         self.treeCreator.lector("./CSV/User_track_data_2.csv")
         self.tree = self.treeCreator.lector("./CSV/User_track_data_3.csv")
+        self.tree.llamarImpresiones("postorden")
         self.G = nx.Graph()
     def generador(self):
-        
-        
         nodos = self.tree.recorrer([])
-        
         try:
             for i in nodos:
-                print (i.nombre)
                 self.G.add_node(i.nombre)
         except:
             print("a")
-        self.G = self.tree.agregadorDeVertices(node=self.tree.raiz,G=self.G)
+        self.tree.agregadorDeVertices(node=self.tree.raiz,G=self.G)
         pos = nx.spring_layout(self.G)
         node_x = []
         node_y = []
         for key in pos:
             node_x.append(pos[key][0])
             node_y.append(pos[key][1])
-            
         node_trace = go.Scatter(
             x=node_x, y=node_y,
             mode='markers+text',
