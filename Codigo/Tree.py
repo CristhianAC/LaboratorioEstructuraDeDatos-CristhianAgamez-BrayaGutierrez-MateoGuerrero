@@ -70,11 +70,11 @@ class Tree:
             self.inordernRecursivo(node.RightSon)
     def agregadorDeVertices(self,node:Nodo, G:nx.Graph):
         if node is not None:
-            if node.LeftSon is not None and node.LeftSon is Nodo:
+            if node.LeftSon is not None:
                 G.add_edge(node.nombre, node.LeftSon.nombre)
                 print("Agregué eje izq")
-            if node.RightSon is not None and node.RightSon is Nodo:
-                G.add_edge(node.nombre, node.LeftSon.nombre)
+            if node.RightSon is not None:
+                G.add_edge(node.nombre, node.RightSon.nombre)
                 print("Agregué eje der")            
             self.agregadorDeVertices(node.LeftSon, G)
             self.agregadorDeVertices(node.RightSon, G) 
