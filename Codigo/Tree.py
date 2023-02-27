@@ -72,10 +72,8 @@ class Tree:
         if node is not None:
             if node.LeftSon is not None:
                 G.add_edge(node.nombre, node.LeftSon.nombre)
-                print("Agregué eje izq")
             if node.RightSon is not None:
                 G.add_edge(node.nombre, node.RightSon.nombre)
-                print("Agregué eje der")            
             self.agregadorDeVertices(node.LeftSon, G)
             self.agregadorDeVertices(node.RightSon, G) 
         
