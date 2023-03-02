@@ -1,5 +1,6 @@
 class Nodo:
-    def __init__(self,data:int , name:str, canciones:list ,level:int =0 ) -> None:
+    def __init__(self,data:int , name:str, canciones:list ,level:int =0, posx = 0, posy = 0 ) -> None:
+        self._coords = [posx, posy]
         self.nombre = name
         self.data = data
         self.level = level
@@ -7,3 +8,6 @@ class Nodo:
         self.songs = self.songs.append(canciones)
         self.LeftSon = None
         self.RightSon = None
+    def dameCoords(self):
+        return self._coords
+    
