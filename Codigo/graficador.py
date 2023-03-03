@@ -1,5 +1,7 @@
 import plotly.graph_objects as go
 import networkx as nx
+import igraph
+from igraph import Graph, EdgeSeq
 from creadorDeArbol import creadorDeArbol
 class graficador:
     def __init__(self) -> None:
@@ -17,58 +19,50 @@ class graficador:
         except:
             print("a")
         self.tree.agregadorDeVertices(node=self.tree.raiz,G=self.G)
-        pos = nx.spring_layout(self.G)
-        node_x = []
-        node_y = []
-        for key in pos:
-            node_x.append(pos[key][0])
-            node_y.append(pos[key][1])
-        node_trace = go.Scatter(
-            x=node_x, y=node_y,
-            mode='markers+text',
-            text=list(self.G.nodes),
-            textposition="bottom center",
-            hoverinfo='text',
-            marker=dict(
-                showscale=False,
-                color='red',
-                size=20
-            )
-        )
-        
-        edge_x = []
-        edge_y = []
-        for edge in self.G.edges():
-            x0, y0 = pos[edge[0]]
-            x1, y1 = pos[edge[1]]
-            edge_x.append(x0)
-            edge_x.append(x1)
-            edge_x.append(None)
-            edge_y.append(y0)
-            edge_y.append(y1)
-            edge_y.append(None)
+        nr_vertices = len(nodos)
+        v_label = list(map(str, range(nr_vertices)))
+        G = Graph.Tree(nr_vertices, 2) # 2 stands for children number
+        lay = G.layout('rt')
 
-        edge_trace = go.Scatter(
-            x=edge_x, y=edge_y,
-            line=dict(width=1, color='black'),
-            hoverinfo='none',
-            mode='lines'
-        )
-        fig = go.Figure(
-            data=[edge_trace, node_trace],
-                layout=go.Layout(
-                    title='Spotify',
-                    titlefont_size=16,
-                    showlegend=False,
-                    hovermode='closest',
-                    margin=dict(b=20,l=5,r=5,t=40),
-                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
-                )
-            )
+        position = {k: lay[k] for k in range(nr_vertices)}
+        Y = [lay[k][1] for k in range(nr_vertices)]
+        M = max(Y)
+        print(position)
+        es = EdgeSeq(G) # sequence of edges
+        E = [e.tuple for e in G.es] # list of edges
+
+        L = len(position)
+        Xn = [position[k][0] for k in range(L)]
+        Yn = [2*M-position[k][1] for k in range(L)]
+        Xe = []
+        Ye = []
+        for edge in E:
+            Xe+=[position[edge[0]][0],position[edge[1]][0], None]
+            Ye+=[2*M-position[edge[0]][1],2*M-position[edge[1]][1], None]
+
+        labels = v_label
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=Xe,
+                        y=Ye,
+                        mode='lines',
+                        line=dict(color='rgb(210,210,210)', width=1),
+                        hoverinfo='none'
+                        ))
+        fig.add_trace(go.Scatter(x=Xn,
+                        y=Yn,
+                        mode='markers',
+                        name='bla',
+                        marker=dict(symbol='circle-dot',
+                                        size=18,
+                                        color='#6175c1',    #'#DB4551',
+                                        line=dict(color='rgb(50,50,50)', width=1)
+                                        ),
+                        text=labels,
+                        hoverinfo='text',
+                        opacity=0.8
+                        ))
         fig.show()
-
-
 
         
 
