@@ -1,13 +1,8 @@
-a) Se desea usar un árbol de decisión para clasificar las flores de iris según su especie
-a partir de sus medidas morfológicas, para ello se usarán 150 muestras de tres especies
-diferentes de iris: setosa, versicolor, virginica. Para ello se crea un clasificador de árbol
-de decisión que aprende a predecir la especie de una flor que se basará en las características.
-El clasificador es entrenado con el conjunto de datos del iris proporcionado
+a) Se desea usar un árbol de decisión para clasificar las flores de iris según su especie a partir de sus medidas morfológicas, por lo que se usarán 150 muestras de tres especies diferentes de iris: setosa, versicolor, virginica. Para ello se crea un clasificador de árbol de decisión que aprende a predecir la especie de una flor basándose en las características. El clasificador es entrenado con el conjunto de datos del iris obtenido desde la biblioteca scikit-learn. El resultado final será un árbol binario, en este árbol los nodos tendrán las características de las especies de iris y al mismo tiempo una condición y dependiendo de si es Verdadera (rama izquierda) o Falsa (rama derecha) se llegará a otro nodo que podrá ser una predicción final (nodo hoja) para concluir la especie resultante, u otro nodo que tiene otra condición (nodo interior) para continuar en el árbol.
 
-b) 
+b) Uno de los miembros del grupo está interesado en el aprendizaje automático (machine learning), por lo que se decidió hacer uno de los problemas más sencillos en el área, además de permitir entender qué son los árboles de decisión y cómo interpretarlos.
 
 
 
-
-El dataset puede ser encontrado en el siguiente link:
+--El dataset puede ser encontrado en el siguiente link--
 https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html
