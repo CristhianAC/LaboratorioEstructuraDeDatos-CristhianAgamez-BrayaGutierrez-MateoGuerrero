@@ -1,16 +1,21 @@
+"""
+Se desea mostrar en un árbol B las letras del alfabeto para demostrar como un árbol B es usado y al mismo tiempo notar la diferencia entre los árboles binarios vistos en clase.
+---código class Node y class BTree fueron sacados de Chatgpt---
+"""
+#Se importa la clase Digraph del módulo graphviz
 from graphviz import Digraph
 
 def graph_btree(node, dot=None):
-    if dot is None:
-        dot = Digraph()
-        dot.attr('node', shape='rectangle')
-    dot.node(str(node.keys))
-    for child in node.children:
-        if child:
-            dot.node(str(child.keys))
-            dot.edge(str(node.keys), str(child.keys))
-            graph_btree(child, dot)
-    return dot
+    if dot is None:# Si el objeto Digraph() es None
+        dot = Digraph() # entonces se creará un objeto Digraph()
+        dot.attr('node', shape='rectangle') # Se configura el atributo node con forma de los nodos como rectángulos
+    dot.node(str(node.keys)) # Se agrega un nodo nuevo al grafo Digraph con la clave actual del nodo del árbol B, se mostrará como una cadena de caracteres
+    for child in node.children: # Se itera sobre los hijos del nodo actual 
+        if child: # Si el hijo es True
+            dot.node(str(child.keys)) # Se agrega un nuevo nodo al Digraph con la clave del nodo hijo actual
+            dot.edge(str(node.keys), str(child.keys)) #Se agrega una arista dirigida desde el nodo actual actual hasta el nodo hijo
+            graph_btree(child, dot) # Usando recursividad se llama a la función graph_tree() para crear los nodos y aristas para el hijo actual
+    return dot # Retorna el objeto Digraph con los nodos y aristas creados
 
 class Node:
     def __init__(self, leaf=False):
@@ -53,48 +58,45 @@ class BTree:
             self._insert_non_full(r, k) # Llama al método _insert_non_full con r y k como argumentos para insertar la clave k en el subárbol apropiado de r
 
     def _insert_non_full(self, x, k):
-        i = len(x.keys) - 1
-        if x.leaf:
-            x.keys.append(0)
-            while i >= 0 and k < x.keys[i]:
-                x.keys[i + 1] = x.keys[i]
+        i = len(x.keys) - 1 # Se obtiene el índice del último elemento de las claves del nodo x
+        if x.leaf: # Si x es una hoja
+            x.keys.append(0) # Se añade una clave k en la lista
+            while i >= 0 and k < x.keys[i]: # Mientras i sea mayor o igual que 0 y k sea menor que la clave en la posición i
+                x.keys[i + 1] = x.keys[i] 
                 i -= 1
-            x.keys[i + 1] = k
-        else:
-            while i >= 0 and k < x.keys[i]:
-                i -= 1
-            i += 1
-            if len(x.children[i].keys) == (2 * self.t) - 1:
-                self._split_child(x, i)
+            x.keys[i + 1] = k # Se inserta la clave en la posición i + 1
+        else: # Si x no es una hoja
+            while i >= 0 and k < x.keys[i]: # Mientras i sea mayor o igual que 0 y k sea menor que la clave en la posición i
+                i -= 1 # Decrese i en uno
+            i += 1 # Aumenta i en uno
+            if len(x.children[i].keys) == (2 * self.t) - 1: # Se encuentra el hijo apropiado y se verifica si esta lleno
+                self._split_child(x, i) # Si el hijo está lleno, se divide en dos
                 if k > x.keys[i]:
                     i += 1
-            self._insert_non_full(x.children[i], k)
+            self._insert_non_full(x.children[i], k) # Se inserta k en el hijo apropiado
 
     def _split_child(self, x, i):
-        t = self.t
-        y = x.children[i]
-        z = Node(leaf=y.leaf)
-        x.children.insert(i + 1, z)
-        x.keys.insert(i, y.keys.pop(t - 1))
-        z.keys = y.keys[t - 1:]
-        y.keys = y.keys[:t - 1]
-        if not y.leaf:
-            z.children = y.children[t:]
-            y.children = y.children[:t]
+        t = self.t # Se obtiene el valor de t
+        y = x.children[i]#se divide un nodo "y"
+        z = Node(leaf=y.leaf) # se crea un nuevo z con la misma profundidad que "y"
+        x.children.insert(i + 1, z) # Se inserta el nuevo z en la posición i + 1
+        x.keys.insert(i, y.keys.pop(t - 1)) # Se inserta la mediana de "y"
+        z.keys = y.keys[t - 1:]# nodo z tiene misma profundidad que "y" y sus valores son igual o mayores que la mediana
+        y.keys = y.keys[:t - 1]# nodo "y" tiene misma profundidad que z y sus valores menores que la mediana
+        if not y.leaf: # si "y" no es una hoja, los hijos se distribuyen entre:
+            z.children = y.children[t:]# Los hijos que se encuentran desde la mediana en adelante se guardan en el nodo "z"
+            y.children = y.children[:t]# Los hijos que se encuentran antes de la mediana se guardan en el nodo "y"
     
     def delete(self, k):
-        self._delete(self.root, k)
+        self._delete(self.root, k)# se busca primero la llave y recursivamente la elimina del árbol B
     
 
     def __str__(self):
-        return str(self.root)
+        return str(self.root) # retorna una representación en cadena de la raíz del árbol
     
     
-
-
-
-my_btree = BTree(2)
-my_btree.insert("a")
+my_btree = BTree(2) # se da un factor de ramificación de 2
+my_btree.insert("a") # se insertan 26 letras del alfabeto
 my_btree.insert("b")
 my_btree.insert("c")
 my_btree.insert("d")
@@ -122,9 +124,8 @@ my_btree.insert("y")
 my_btree.insert("z")
 
 
-
-dot = graph_btree(my_btree.root)
-dot.render('btree_graph')
+dot = graph_btree(my_btree.root) # la función graph_btree() permitirá crear un grafo del árbol
+dot.render('btree_graph') # renderiza y guarda el gráfica generado por graph_btree() como un archivo
 
 
 
