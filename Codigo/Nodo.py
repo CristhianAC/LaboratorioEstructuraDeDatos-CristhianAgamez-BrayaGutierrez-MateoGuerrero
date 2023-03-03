@@ -10,4 +10,6 @@ class Nodo:
         self.RightSon = None
     def dameCoords(self):
         return self.coords
+    def __repr__(self) -> str:
+        return self.nombre
     

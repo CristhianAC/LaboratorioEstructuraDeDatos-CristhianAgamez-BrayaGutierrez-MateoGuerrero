@@ -12,7 +12,7 @@ class Tree:
         if self.raiz== None:
             nodo = Nodo(data, name= name, canciones= canciones)
             self.raiz = nodo
-            print("Entré")
+            
             return
         if currentNode == None:
             currentNode = self.raiz
@@ -22,13 +22,13 @@ class Tree:
         if data>datoDeNodo:
             if currentNode.RightSon == None:
                 
-                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]-1.33333, posy=coords[1]-1.33333)
+                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]+2.6666, posy=coords[1]-1.33333)
                 currentNode.RightSon = nodo 
             else:
                 self.addNode(data = data, currentNode= currentNode.RightSon, name= name, canciones=canciones)
         elif data<datoDeNodo:
             if currentNode.LeftSon == None:
-                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]+1.33333, posy=coords[1]-1.33333)
+                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]-1.33333, posy=coords[1]-1.33333)
                 currentNode.LeftSon = nodo 
             else:
                 self.addNode(data, currentNode = currentNode.LeftSon, name = name, canciones= canciones)
