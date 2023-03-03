@@ -21,14 +21,16 @@ class Tree:
         coords = currentNode.dameCoords()
         if data>datoDeNodo:
             if currentNode.RightSon == None:
-                
-                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]+2.6666, posy=coords[1]-1.33333)
+                nivel =currentNode.level+1
+                nodo = Nodo(data, level=nivel, name= name, canciones= canciones, posx =coords[0]+(1.333333)/nivel, posy=coords[1]-1.33333)
                 currentNode.RightSon = nodo 
             else:
-                self.addNode(data = data, currentNode= currentNode.RightSon, name= name, canciones=canciones)
+                self.addNode(data = data, currentNode= currentNode.RightSon, name= name, canciones = canciones)
         elif data<datoDeNodo:
+            
             if currentNode.LeftSon == None:
-                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]-1.33333, posy=coords[1]-1.33333)
+                nivel =currentNode.level+1
+                nodo = Nodo(data, level=nivel, name= name, canciones= canciones, posx = coords[0]-(1.33333)/nivel, posy = coords[1]-1.33333)
                 currentNode.LeftSon = nodo 
             else:
                 self.addNode(data, currentNode = currentNode.LeftSon, name = name, canciones= canciones)
@@ -118,14 +120,30 @@ class Tree:
         traversed.append(self.raiz)
         if self.raiz is None:
             return None
+        x = traversed.pop(0)
+        nodos.append(x)
+        if x is not None:
+            traversed.append(x.LeftSon)
+            traversed.append(x.RightSon)
+        
         while traversed != []:
             
-            x = traversed.pop(0)
-            nodos.append(x)
-            if x is not None:
-                traversed.append(x.LeftSon)
             
-                traversed.append(x.RightSon)
+            size = len(nodos)
+            espar = size%2==0
+            
+            if espar:
+                index_p = (size-2)/2
+            else:
+                index_p = (size-1)/2
+            if (nodos[int(index_p)] == None):
+                nodos.append(None)
+            else:
+                x = traversed.pop(0)
+                nodos.append(x)
+                if x is not None:
+                    traversed.append(x.LeftSon)
+                    traversed.append(x.RightSon)
             
         
         return nodos

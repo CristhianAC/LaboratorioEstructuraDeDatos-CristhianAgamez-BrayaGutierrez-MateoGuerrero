@@ -78,14 +78,14 @@ class graficador:
                     print(f"[{nodo.nombre}] - [{hijoder.nombre}]")
                     Ye+=[position[nodo.nombre][1],position[hijoder.nombre][1], None]
         labels = v_label
-        print(nodos)
+        #print(nodos)
         #print(Ye)
         #print(position)
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=Xe,
                         y=Ye,
                         mode='lines',
-                        line=dict(color='rgb(210,210,210)', width=1),
+                        line=dict(color='rgb(210,210,210)', width=5),
                         hoverinfo='none'
                         ))
         fig.add_trace(go.Scatter(x=Xn,
@@ -93,7 +93,7 @@ class graficador:
                         mode='markers',
                         name='bla',
                         marker=dict(symbol='circle-dot',
-                                        size=18,
+                                        size=30,
                                         color='#6175c1',    #'#DB4551',
                                         line=dict(color='rgb(50,50,50)', width=1)
                                         ),
@@ -107,7 +107,7 @@ class graficador:
             showticklabels=False,
             )
 
-        fig.update_layout(title= 'Arbol de spotify',
+        fig.update_layout(
                     annotations=self.make_annotations(pos = position,text = v_label),
                     font_size=12,
                     showlegend=False,
@@ -117,7 +117,7 @@ class graficador:
                     hovermode = 'closest',
                     plot_bgcolor='rgb(248,248,248)'
                     )
-        fig.show()
+        return fig
 
         
 
