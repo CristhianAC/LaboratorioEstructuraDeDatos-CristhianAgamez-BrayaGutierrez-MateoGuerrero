@@ -20,9 +20,10 @@ class htmlwriter():
             html.H1("Arbol De Spotify", style={'textAlign' : 'center', 'padding-top' : 20 }),
             html.H3("By: Cristhian Agamez, Mateo Guerrero, Brayan Gutierrez",style={'textAlign' : 'center', 'font-size':20, 
                                                                                     'padding-bottom' : 20} ),
-            html.H2("Punto 1",style={'padding-bottom' : 20, 'padding-left' : 20} ),
-            dcc.Graph(figure=self.fig,style={'height' : 800, 'width' : 1100, 'textAlign' : 'center', 'background-color': 'rgb(0,0,0)'}
-                        ), html.Div([
+            html.H2("Punto 1",style={'padding-bottom' : 20, 'padding-left' : 20} ),html.Div(
+                dcc.Graph(figure=self.fig,style={'height' : 800, 'width' : 1100, 'textAlign' : 'center', 'background-color': 'rgb(0,0,0)'}
+                        ), style={'display' :'flex', 'justify-content': 'center'}),
+            html.Div([
             html.H2("Punto 2",style={ 'padding-left' : 20,'padding-top' : 20} ),
             html.Div([
                 html.H3("a)",style={'padding-left' :20}),
