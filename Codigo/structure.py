@@ -32,10 +32,12 @@ class htmlwriter():
                 html.P(" Uno de los miembros del grupo está interesado en el aprendizaje automático (machine learning), por lo que se decidió hacer uno de los problemas más sencillos en el área, además de permitir entender qué son los árboles de decisión y cómo interpretarlos.",
                 style={'padding-left' :20,'padding-top' : 20, 'width':'50%', 'padding-right':20})
                 
-            ], style={'display':'flex'}), html.Div([
+            ], style={'display':'flex'}),html.Div(
+                html.Div([
                 html.P("--El dataset puede ser encontrado en el siguiente link--"),
                 html.P("https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html")
-            ],style={'textAlign' : 'center', 'font-size':15, 'padding-top':30}),
+            ],style={'textAlign' : 'center', 'font-size':15, 'padding-top':30, 'background-color':'rgb(48,48,48)', 'width':1000, 'height':'auto','border-radius':5}),
+            style={"justify-content" : 'center', 'display' : 'flex'}), 
             html.H2("Codigo:", style={"padding-left":30}),
             html.Div([
                 
@@ -54,7 +56,7 @@ class htmlwriter():
                         
                     ], style = {'padding-left':30, 'padding-top':30})
                     
-                ], style={'background-color':'rgb(48,48,48)', 'width':1000, 'height':'auto'})
+                ], style={'background-color':'rgb(48,48,48)', 'width':1000, 'height':'auto', 'border-radius':5})
             ], style={"justify-content" : 'center', 'display' : 'flex'})
             
             
