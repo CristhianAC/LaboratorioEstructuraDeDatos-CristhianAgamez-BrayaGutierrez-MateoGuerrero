@@ -9,20 +9,27 @@ class graficador:
         self.treeCreator.lector("./CSV/User_track_data.csv")
         self.treeCreator.lector("./CSV/User_track_data_2.csv")
         self.tree = self.treeCreator.lector("./CSV/User_track_data_3.csv")
-        
+        #Almaceno los nodos en una lista incluyendo los hijos none
         self.nodos = self.tree.recorrer([])
-        print(self.tree.raiz.songs)
+        
+        
         self.nombres=[]
         self.song=[]
+        #Almaceno los nombres de los nodos en una lista
         for k in self.nodos:
             if k is not None:
                 self.nombres.append(k.nombre)
+        #Almaceno las listas de canciones perteneciente a cada persona en una lista
         for k in self.nodos:
             if k is not None:
                 self.song.append(k.songs)
+        #Creo un atributo que almacene la cantidad de vertices
         self.nr_vertices = len(self.nombres)
+        #Creo el apartado grafico del arbol, especificando que cada nodo tendrá dos hijos como maximo
         self.G = Graph.Tree(self.nr_vertices, 2)
+    #Metodo que se encarga de reemplazar los numeros de los nodos por los nombres de los nodos correspondientes
     def make_annotations(self, pos, text,font_size=10, font_color='rgb(0,0,0)'):
+        
         L=len(pos)
         if len(text)!=L:
             raise ValueError('The lists pos and text must have the same len')
@@ -39,20 +46,21 @@ class graficador:
                     showarrow=False)
             )
         return annotations
+    #Funcion que se encarga de generar el apartado grafico.
     def generador(self):
         nodos = self.tree.recorrer([])
         
-        
+        #Agrego los nodos correspondientes a las graficas
         try:
             for i in nodos:
                 self.G.add_node(i.nombre)
         except:
             print("a")
         
-        
+        #Principalmente creo una lista que almacene los numeros por nivel y no por nombre.
         v_label = list(map(str, range(self.nr_vertices)))
         
-        lay = self.G.layout('rt')
+        #Creo un diccionario que almacenará las coordenadas de los nodos
         position ={}
         Y =[]
         for k in nodos:
@@ -61,6 +69,7 @@ class graficador:
                 Y.append(k.coords[1])
         Xn=[]
         Yn=[]
+        #Se agregaran las coordenadas de los nodos para posteriormente graficarlos en esa posicion
         for k in nodos:
             if k is not None:
                 posicionY = position[k.nombre][1]
@@ -68,8 +77,12 @@ class graficador:
                 Yn.append(posicionY)
         Xe = []
         Ye = []
+        
         for i in range(len(nodos)):
+            #Se recorre cada nodo
             nodo = nodos[i]
+            #Y si ese nodo no esta vacio se calculará si tiene hijos en esa lista.
+            #Posteriormente se tomará el nodo padre y trazará una linea entre el padre y el hijo, con los dos hijos.
             if nodo is not None:
                 izq = 2*i+1
                 der = 2*i+2
@@ -84,23 +97,23 @@ class graficador:
                     
                     Ye+=[position[nodo.nombre][1],position[hijoder.nombre][1], None]
         labels = v_label
-        #print(nodos)
-        #print(Ye)
-        #print(position)
+        #Creo unas figuras
         fig = go.Figure()
+        #Posteriormante se crean las lineas(Aristas) de las listas.
         fig.add_trace(go.Scatter(x=Xe,
                         y=Ye,
                         mode='lines',
                         line=dict(color='rgb(210,210,210)', width=5),
                         hoverinfo='none'
                         ))
+        #Posteriormente se dibujan los nodos sobre las lineas(Aristas)
         fig.add_trace(go.Scatter(x=Xn,
                         y=Yn,
                         mode='markers',
                         name='bla',
                         marker=dict(symbol='circle-dot',
                                         size=30,
-                                        color='#6175c1',    #'#DB4551',
+                                        color='rgb(32,96,61)',
                                         line=dict(color='rgb(50,50,50)', width=1)
                                         ),
                         text=labels,
@@ -112,7 +125,8 @@ class graficador:
             showgrid=False,
             showticklabels=False,
             )
-
+        #actualizo el grafico, pero esta vez se quitan cosa como las coordenadas que aparecen en el ejex y ejey
+        #Tambien agrego las notaciones/nombre del perteneciente del nodo
         fig.update_layout(
                     annotations=self.make_annotations(pos = position,text = v_label),
                     font_size=12,
@@ -123,6 +137,7 @@ class graficador:
                     hovermode = 'closest',
                     plot_bgcolor='rgb(248,248,248)'
                     )
+        #Retorno la grafica
         return fig
 
         

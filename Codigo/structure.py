@@ -6,13 +6,16 @@ import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 class htmlwriter():
     def __init__(self) -> None:
-        
+        #Se crea la pagina web y se le pone un CSS por defecto de bootstrap
         self.app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+        #Intancio el objeto que crea la grafica
         graf = graficador()
+        #Guardo la figura dentro de un atributo
         self.fig=graf.generador()
+        #Llamo al metodo Changer que es el que se encarga de ilustrar el frontend.
         self.changer()
     def changer(self):
-        
+        #Se crea un layout para escribir lo necesario.
         self.app.layout = html.Div([
             html.H1("Arbol De Spotify", style={'textAlign' : 'center', 'padding-top' : 20 }),
             html.H3("By: Cristhian Agamez, Mateo Guerrero, Brayan Gutierrez",style={'textAlign' : 'center', 'font-size':20, 
