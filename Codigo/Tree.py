@@ -18,14 +18,17 @@ class Tree:
             currentNode = self.raiz
         datoDeNodo=currentNode.data
         nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones)
-        
+        coords = currentNode.dameCoords()
         if data>datoDeNodo:
             if currentNode.RightSon == None:
+                
+                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]-1.33333, posy=coords[1]-1.33333)
                 currentNode.RightSon = nodo 
             else:
                 self.addNode(data = data, currentNode= currentNode.RightSon, name= name, canciones=canciones)
         elif data<datoDeNodo:
             if currentNode.LeftSon == None:
+                nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones, posx=coords[0]+1.33333, posy=coords[1]-1.33333)
                 currentNode.LeftSon = nodo 
             else:
                 self.addNode(data, currentNode = currentNode.LeftSon, name = name, canciones= canciones)
@@ -71,9 +74,9 @@ class Tree:
     def agregadorDeVertices(self,node:Nodo, G:nx.Graph):
         if node is not None:
             if node.LeftSon is not None:
-                G.add_edge(node.nombre, node.LeftSon.nombre)
+                G.add_edge(node.data, node.LeftSon.data)
             if node.RightSon is not None:
-                G.add_edge(node.nombre, node.RightSon.nombre)
+                G.add_edge(node.data, node.RightSon.data)
             self.agregadorDeVertices(node.LeftSon, G)
             self.agregadorDeVertices(node.RightSon, G) 
         
@@ -119,10 +122,12 @@ class Tree:
             
             x = traversed.pop(0)
             nodos.append(x)
-            if x.LeftSon != None:
+            if x is not None:
                 traversed.append(x.LeftSon)
-            if x.RightSon != None:
+            
                 traversed.append(x.RightSon)
+            
+        
         return nodos
     
     def buscaElMenor(self, nodo=None) -> int:

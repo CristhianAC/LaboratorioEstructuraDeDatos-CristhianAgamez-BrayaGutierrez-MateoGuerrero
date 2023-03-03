@@ -10,36 +10,81 @@ class graficador:
         self.treeCreator.lector("./CSV/User_track_data_2.csv")
         self.tree = self.treeCreator.lector("./CSV/User_track_data_3.csv")
         self.tree.llamarImpresiones("postorden")
-        self.G = nx.Graph()
+        nodos = self.tree.recorrer([])
+        self.nombres=[]
+        for k in nodos:
+            if k is not None:
+                self.nombres.append(k.nombre)
+        
+        self.nr_vertices = len(self.nombres)
+        self.G = Graph.Tree(self.nr_vertices, 2)
+    def make_annotations(self, pos, text,M, nodos,font_size=10, font_color='rgb(0,0,0)'):
+        L=len(pos)
+        if len(text)!=L:
+            raise ValueError('The lists pos and text must have the same len')
+        annotations = []
+        for k in range(L):
+            annotations.append(
+                dict(
+                    text=self.nombres[k], # or replace labels with a different list for the text within the circle
+                    x=pos[self.nombres[k]][0], y=pos[self.nombres[k]][1],
+                    xref='x1', yref='y1',
+                    font=dict(color=font_color, size=font_size),
+                    showarrow=False)
+            )
+        return annotations
     def generador(self):
         nodos = self.tree.recorrer([])
+        
+        
+        #print(nombres)
         try:
             for i in nodos:
                 self.G.add_node(i.nombre)
         except:
             print("a")
-        self.tree.agregadorDeVertices(node=self.tree.raiz,G=self.G)
-        nr_vertices = len(nodos)
-        v_label = list(map(str, range(nr_vertices)))
-        G = Graph.Tree(nr_vertices, 2) # 2 stands for children number
-        lay = G.layout('rt')
-
-        position = {k: lay[k] for k in range(nr_vertices)}
-        Y = [lay[k][1] for k in range(nr_vertices)]
-        M = max(Y)
+        
+        
+        v_label = list(map(str, range(self.nr_vertices)))
+        print(nodos)
+        lay = self.G.layout('rt')
+        position ={}
+        Y =[]
+        for k in nodos:
+            if k is not None:
+                
+                position[k.nombre] = k.coords
+                Y.append(k.coords[1])
         print(position)
-        es = EdgeSeq(G) # sequence of edges
-        E = [e.tuple for e in G.es] # list of edges
+        M = max(Y)
+        
+        
 
         L = len(position)
-        Xn = [position[k][0] for k in range(L)]
-        Yn = [2*M-position[k][1] for k in range(L)]
+        Xn=[]
+        Yn=[]
+        print (position["Sebastian Racedo Val"][1])
+        for k in nodos:
+            if k is not None:
+                posicionY = position[k.nombre][1]
+                Xn.append(position[k.nombre][0]) 
+                Yn.append(posicionY)
         Xe = []
         Ye = []
-        for edge in E:
-            Xe+=[position[edge[0]][0],position[edge[1]][0], None]
-            Ye+=[2*M-position[edge[0]][1],2*M-position[edge[1]][1], None]
-
+        for i in range(len(nodos)):
+            
+            nodo = nodos[i]
+            if nodo is not None:
+                izq = 2*i+1
+                der = 2*i+2
+                if izq<len(nodos) and nodos[izq] is not None:
+                    hijoizq = nodos[izq]
+                    Xe+=[position[nodo.nombre][0],position[hijoizq.nombre][0], None]
+                    Ye+=[position[nodo.nombre][1],position[hijoizq.nombre][1], None]
+                if der<len(nodos) and nodos[der] is not None:
+                    hijoder = nodos[der]
+                    Xe+=[position[nodo.nombre][0],position[hijoder.nombre][0], None]
+                    Ye+=[position[nodo.nombre][1],position[hijoder.nombre][1], None]
         labels = v_label
 
         fig = go.Figure()
@@ -62,6 +107,22 @@ class graficador:
                         hoverinfo='text',
                         opacity=0.8
                         ))
+        axis = dict(showline=False, # hide axis line, grid, ticklabels and  title
+            zeroline=False,
+            showgrid=False,
+            showticklabels=False,
+            )
+
+        fig.update_layout(title= 'Arbol de spotify',
+                    annotations=self.make_annotations(pos = position,text = v_label, M = M, nodos = nodos),
+                    font_size=12,
+                    showlegend=False,
+                    xaxis=axis,
+                    yaxis=axis,
+                    margin=dict(l=40, r=40, b=85, t=100),
+                    hovermode='closest',
+                    plot_bgcolor='rgb(248,248,248)'
+                    )
         fig.show()
 
         
