@@ -51,11 +51,12 @@ class Tree:
         if currentNode == None:
             currentNode = self.raiz
         datoDeNodo=currentNode.data
-        nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones)
-        coords = currentNode.dameCoords()
+        
+        
 
         if data>datoDeNodo:
             if currentNode.RightSon == None:
+                coords = currentNode.dameCoords()
                 nivel =currentNode.level+1
                 nodo = Nodo(data, level=nivel, name= name, canciones= canciones, posx =coords[0]+(1.333333)/nivel, posy=coords[1]-1.33333)
                 currentNode.RightSon = nodo 
@@ -83,6 +84,7 @@ class Tree:
         elif data<datoDeNodo:
             
             if currentNode.LeftSon == None:
+                coords = currentNode.dameCoords()
                 nivel =currentNode.level+1
                 nodo = Nodo(data, level=nivel, name= name, canciones= canciones, posx = coords[0]-(1.33333)/nivel, posy = coords[1]-1.33333)
                 currentNode.LeftSon = nodo
