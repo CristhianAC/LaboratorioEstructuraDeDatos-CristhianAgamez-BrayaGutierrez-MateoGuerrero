@@ -1,3 +1,13 @@
-a) Se hará un árbol de decisión, es decir, un árbol binario en el que los nodos constan de preguntas,
-las ramas de decisiones y que llevaran a otros nodos y los nodos hojas que se pueden llamar como las decisiones
-finales.
+a) Se desea usar un árbol de decisión para clasificar las flores de iris según su especie
+a partir de sus medidas morfológicas, para ello se usarán 150 muestras de tres especies
+diferentes de iris: setosa, versicolor, virginica. Para ello se crea un clasificador de árbol
+de decisión que aprende a predecir la especie de una flor que se basará en las características.
+El clasificador es entrenado con el conjunto de datos del iris proporcionado
+
+b) 
+
+
+
+
+El dataset puede ser encontrado en el siguiente link:
+https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html
