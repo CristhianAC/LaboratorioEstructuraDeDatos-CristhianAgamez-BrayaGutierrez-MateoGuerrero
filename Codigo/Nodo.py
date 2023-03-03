@@ -8,6 +8,7 @@ class Nodo:
         self.songs = self.songs.append(canciones)
         self.LeftSon = None
         self.RightSon = None
+        self.height = 1
     def dameCoords(self):
         return self.coords
     def __repr__(self) -> str:

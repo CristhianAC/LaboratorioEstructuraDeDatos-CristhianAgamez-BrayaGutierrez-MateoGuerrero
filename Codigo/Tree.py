@@ -6,24 +6,78 @@ class Tree:
         self.raiz = None
         if data is not None:
             self.raiz = Nodo(data)
+
+    def get_height(self, node: Nodo):
+        if node is None:
+            return 0
+        return node.height
+
+    def get_balance(self, node: Nodo):
+        if node is None:
+            return 0
+        return self.get_height(node.LeftSon) - self.get_height(node.RightSon)
     
-    def addNode(self, data,name,canciones, currentNode=None):
+    def rotate_right(self, node: Nodo):
+        left_node = node.LeftSon
+        right_of_left = left_node.RightSon
+
+        left_node.RightSon = node
+        node.LeftSon = right_of_left
+
+        node.height = max(self.get_height(node.LeftSon), self.get_height(node.RightSon)) + 1
+        left_node.height = max(self.get_height(left_node.LeftSon), self.get_height(left_node.RightSon)) + 1
+
+        return 
+
+    def rotate_left(self, node: Nodo):
+        right_node = node.RightSon
+        left_of_right = right_node.LeftSon
+
+        right_node.left = node
+        node.RightSon = left_of_right
+
+        node.height = max(self.get_height(node.LeftSon), self.get_height(node.RightSon)) + 1
+        right_node.height = max(self.get_height(right_node.LeftSon), self.get_height(right_node.RightSon)) + 1
+
+        return right_node
+    
+    def addNode(self, data,name,canciones, currentNode: Nodo =None):
         
         if self.raiz== None:
             nodo = Nodo(data, name= name, canciones= canciones)
             self.raiz = nodo
-            
             return
+
         if currentNode == None:
             currentNode = self.raiz
         datoDeNodo=currentNode.data
         nodo = Nodo(data, level=currentNode.level+1, name= name, canciones= canciones)
         coords = currentNode.dameCoords()
+
         if data>datoDeNodo:
             if currentNode.RightSon == None:
                 nivel =currentNode.level+1
                 nodo = Nodo(data, level=nivel, name= name, canciones= canciones, posx =coords[0]+(1.333333)/nivel, posy=coords[1]-1.33333)
                 currentNode.RightSon = nodo 
+
+                nodo.height = max(self.get_height(nodo.LeftSon), self.get_height(nodo.RightSon)) + 1
+                balance = self.get_balance(nodo)
+                
+                if balance > 1 and data < nodo.LeftSon.data:
+                    return self.rotate_right(nodo)
+                
+                if balance < -1 and data > nodo.RightSon.data:
+                    return self.rotate_left(nodo)
+
+                if balance > 1 and data > nodo.LeftSon.data:
+                    nodo.LeftSon = self.rotate_left(nodo.LeftSon)
+                    return self.rotate_right(nodo) 
+                
+                if balance < -1 and data < nodo.RightSon.data:
+                    nodo.RightSon = self.rotate_right(nodo.RightSon)
+                    return self.rotate_left(nodo)
+                
+
             else:
                 self.addNode(data = data, currentNode= currentNode.RightSon, name= name, canciones = canciones)
         elif data<datoDeNodo:
@@ -31,7 +85,26 @@ class Tree:
             if currentNode.LeftSon == None:
                 nivel =currentNode.level+1
                 nodo = Nodo(data, level=nivel, name= name, canciones= canciones, posx = coords[0]-(1.33333)/nivel, posy = coords[1]-1.33333)
-                currentNode.LeftSon = nodo 
+                currentNode.LeftSon = nodo
+
+                nodo.height = max(self.get_height(nodo.LeftSon), self.get_height(nodo.RightSon)) + 1
+                balance = self.get_balance(nodo)
+                
+                if balance > 1 and data < nodo.LeftSon.data:
+                    return self.rotate_right(nodo)
+                
+                if balance < -1 and data > nodo.RightSon.data:
+                    return self.rotate_left(nodo)
+
+                if balance > 1 and data > nodo.LeftSon.data:
+                    nodo.LeftSon = self.rotate_left(nodo.LeftSon)
+                    return self.rotate_right(nodo) 
+                
+                if balance < -1 and data < nodo.RightSon.data:
+                    nodo.RightSon = self.rotate_right(nodo.RightSon)
+                    return self.rotate_left(nodo)
+
+
             else:
                 self.addNode(data, currentNode = currentNode.LeftSon, name = name, canciones= canciones)
     
@@ -55,8 +128,7 @@ class Tree:
                 return 
             else:
                 queue.append(node.RightSon)
-
-    
+   
     def llamarImpresiones(self, opciones):
         
         if (opciones == "inorden"):
@@ -66,13 +138,13 @@ class Tree:
         elif(opciones== "postorden"):
             self.postordenRecursivo(self.raiz)
 
-    
     def inordernRecursivo(self, node=None):
         
         if node is not None:
             self.inordernRecursivo(node.LeftSon)
             print(node.data, end="-> ")
             self.inordernRecursivo(node.RightSon)
+            
     def agregadorDeVertices(self,node:Nodo, G:nx.Graph):
         if node is not None:
             if node.LeftSon is not None:
@@ -81,7 +153,6 @@ class Tree:
                 G.add_edge(node.data, node.RightSon.data)
             self.agregadorDeVertices(node.LeftSon, G)
             self.agregadorDeVertices(node.RightSon, G) 
-        
         
     def preordenRecursivo(self, node)-> None:
         
@@ -98,7 +169,6 @@ class Tree:
             self.postordenRecursivo(node.RightSon)
             print(node.data, end="-> ")
     
-    
     def levelOrderSearch(self, value: int) -> Nodo:
         
         traversed = []
@@ -114,6 +184,7 @@ class Tree:
             if x.RightSon != None:
                 traversed.append(x.RightSon)
         return None
+    
     def recorrer(self, nodos):
         traversed = []
         
@@ -148,7 +219,68 @@ class Tree:
         
         return nodos
     
-    def buscaElMenor(self, nodo=None) -> int:
+    def delete_node(self, node: Nodo, data):
+        if node is None:
+            return node
+
+        elif data < node.data:
+            node.LeftSon = self.delete_node(node.LeftSon, data)
+
+        elif data > node.data:
+            node.RightSon = self.delete_node(node.RightSon, data)    
+
+        else:
+            # El nodo no tiene hijos
+            if node.LeftSon is None:
+                temp = node.RightSon
+                node = None
+                return 
+
+            elif node.RightSon is None:
+                temp = node.LeftSon
+                node = None
+                return
+
+            # El nodo tiene 2 hijos, se busca el inorder succesor
+            temp = self.buscaElMenor(node.RightSon)
+
+            # Se copia el valor del inorder succesor al nodo 
+            node.data = temp.data
+
+            # Se elimina el inorder succesor (debido a que ya se guardo en otro lugar, en la linea aterior) 
+            node.RightSon = self.delete_node(node.RightSon, temp.data)
+
+        # Por si el arbol solo tiene un nodo 
+        if node is None:
+            return 
+        
+        # Se actualiza la altura del nodo acutual 
+        node.height = 1 + max(self.get_height(node.LeftSon),self.get_height(node.RightSon))
+
+        # Se obtiene el balance del nodo
+        balance = self.get_balance(node)
+
+        # Caso izquierda-izquierda 
+        if balance > 1 and self.get_balance(node.LeftSon) >= 0:
+            return self.rotate_right(node)
+
+        # Caso izquierda-derecha
+        if balance > 1 and self.get_balance(node.LeftSon) < 0:
+            node.LeftSon = self.rotate_left(node.LeftSon)  
+            return self.rotate_right(node)
+        
+        # Caso derecha-derecha 
+        if balance < -1 and self.get_balance(node.RightSon) <= 0:
+            return self.rotate_left(node)
+        
+        # Caso derecha-izquierda
+        if balance < -1 and self.get_balance(node.RightSon) > 0:
+            node.RightSon = self.rotate_right(node.RightSon)
+            return self.rotate_left(node)
+        
+        return node
+
+    def buscaElMenor(self, nodo=None) -> Nodo:
         
         if nodo == None:
             nodo = self.raiz
@@ -156,6 +288,7 @@ class Tree:
             return nodo
         else: 
             return self.buscaElMenor(nodo.LeftSon)
+        
     def buscaElMayor(self, nodo=None) -> int:
         
         if nodo == None:
@@ -164,6 +297,7 @@ class Tree:
             return nodo
         else: 
             return self.buscaElMayor(nodo.RightSon)
+        
     def buscarLvl(self, data):
         
         traversed = []
@@ -181,7 +315,6 @@ class Tree:
                 traversed.append(x.RightSon)
         
         return None
-    
     
     def buscarCamino(self, nodoActual, nodoObjetivo, camino):
         
