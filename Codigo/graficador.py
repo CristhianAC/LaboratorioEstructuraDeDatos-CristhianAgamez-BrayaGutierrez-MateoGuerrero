@@ -10,12 +10,16 @@ class graficador:
         self.treeCreator.lector("./CSV/User_track_data_2.csv")
         self.tree = self.treeCreator.lector("./CSV/User_track_data_3.csv")
         
-        nodos = self.tree.recorrer([])
+        self.nodos = self.tree.recorrer([])
+        print(self.tree.raiz.songs)
         self.nombres=[]
-        for k in nodos:
+        self.song=[]
+        for k in self.nodos:
             if k is not None:
                 self.nombres.append(k.nombre)
-        
+        for k in self.nodos:
+            if k is not None:
+                self.song.append(k.songs)
         self.nr_vertices = len(self.nombres)
         self.G = Graph.Tree(self.nr_vertices, 2)
     def make_annotations(self, pos, text,font_size=10, font_color='rgb(0,0,0)'):
@@ -24,9 +28,11 @@ class graficador:
             raise ValueError('The lists pos and text must have the same len')
         annotations = []
         for k in range(L):
+            
             annotations.append(
                 dict(
-                    text = self.nombres[k], 
+                    
+                        text = self.nombres[k], 
                     x=pos[self.nombres[k]][0], y=pos[self.nombres[k]][1],
                     xref='x1', yref='y1',
                     font=dict(color=font_color, size=font_size),
@@ -70,12 +76,12 @@ class graficador:
                 if izq<len(nodos) and nodos[izq] is not None:
                     hijoizq = nodos[izq]
                     Xe+=[position[nodo.nombre][0],position[hijoizq.nombre][0], None]
-                    print(f"[{nodo.nombre}] - [{hijoizq.nombre}]")
+                    
                     Ye+=[position[nodo.nombre][1],position[hijoizq.nombre][1], None]
                 if der<len(nodos) and nodos[der] is not None:
                     hijoder = nodos[der]
                     Xe+=[position[nodo.nombre][0],position[hijoder.nombre][0], None]
-                    print(f"[{nodo.nombre}] - [{hijoder.nombre}]")
+                    
                     Ye+=[position[nodo.nombre][1],position[hijoder.nombre][1], None]
         labels = v_label
         #print(nodos)

@@ -5,7 +5,7 @@ class Nodo:
         self.data = data
         self.level = level
         self.songs =[]
-        self.songs = self.songs.append(canciones)
+        self.songs.append(canciones)
         self.LeftSon = None
         self.RightSon = None
         self.height = 1

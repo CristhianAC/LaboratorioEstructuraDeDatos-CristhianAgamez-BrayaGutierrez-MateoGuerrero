@@ -13,8 +13,8 @@ class creadorDeArbol:
                 code = int(self.uncrypt.traducir(lista[1]))
                 nodoEncontrado = self.arbol.levelOrderSearch(code)
                 if nodoEncontrado is None:
-                    
-                    nodo = self.arbol.addNode(data=code,name=lista[0],canciones = lista[3])
+                    print(lista[3])
+                    self.arbol.addNode(data=code,name=lista[0],canciones = str(lista[3]))
                 elif nodoEncontrado is Nodo:
                     nodoEncontrado.songs.append(lista[3])
         return self.arbol

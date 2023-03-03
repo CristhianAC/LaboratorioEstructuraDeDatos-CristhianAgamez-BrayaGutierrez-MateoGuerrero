@@ -128,7 +128,7 @@ class Tree:
                 return 
             else:
                 queue.append(node.RightSon)
-   
+    
     def llamarImpresiones(self, opciones):
         
         if (opciones == "inorden"):
